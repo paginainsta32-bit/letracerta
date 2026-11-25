@@ -302,7 +302,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 10px 3px;
+      padding: 6px 10px 2px;
       font-family: 'Patrick Hand', cursive;
       font-size: 17px;
       color: rgba(255, 255, 255, 0.9);
@@ -344,9 +344,33 @@
       to { transform: scale(1.1); }
     }
 
+    /* Legenda de Pontuação acima da Barra de Tempo */
+    .legend-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 10.5px;
+      color: #fff;
+      background: rgba(8, 22, 14, 0.52);
+      border-radius: 999px;
+      padding: 2px 10px;
+      margin: 2px 10px 3px;
+      flex-shrink: 0;
+    }
+
+    .legend-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 3px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
     /* Barra de Tempo de 60 Segundos */
     .timer-track {
-      margin: 2px 10px 5px;
+      margin: 0 10px 5px;
       height: 11px;
       background: rgba(0, 0, 0, 0.45);
       border-radius: 999px;
@@ -387,7 +411,7 @@
 
     .secret-slot {
       width: 30px;
-      height: 32px;
+      height: 31px;
       border-radius: 7px;
       background: rgba(255, 255, 255, 0.1);
       border: 2px dashed rgba(255, 245, 157, 0.65);
@@ -452,7 +476,7 @@
     }
 
     .letter-tile {
-      height: clamp(32px, 4.8dvh, 40px);
+      height: clamp(32px, 4.7dvh, 39px);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.08);
       border: 2px solid rgba(255, 255, 255, 0.25);
@@ -491,26 +515,6 @@
       0% { transform: scaleY(0.2); }
       70% { transform: scaleY(1.1); }
       100% { transform: scaleY(1); }
-    }
-
-    /* Legenda Rápida no rodapé da grade */
-    .legend-bar {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      font-size: 10.5px;
-      color: rgba(255, 255, 255, 0.85);
-      margin-top: 2px;
-      flex-shrink: 0;
-    }
-
-    .legend-dot {
-      display: inline-block;
-      width: 9px;
-      height: 9px;
-      border-radius: 3px;
-      margin-right: 3px;
-      vertical-align: middle;
     }
 
     /* Banner Comemorativo (Novo Seguidor & Presentes) */
@@ -903,6 +907,13 @@
         <span class="timer-badge" id="timer-label">⏱️ 60s</span>
       </div>
 
+      <!-- Legenda Verde / Amarelo / Cinza em cima da barra de tempo -->
+      <div class="legend-bar">
+        <span><i class="legend-dot" style="background:#00e676;"></i>Lugar certo (+5⭐)</span>
+        <span><i class="legend-dot" style="background:#ffd54f;"></i>Outro lugar (+2⭐)</span>
+        <span><i class="legend-dot" style="background:#666;"></i>Não tem</span>
+      </div>
+
       <!-- Barra de Tempo de 60 Segundos -->
       <div class="timer-track">
         <div class="timer-fill" id="timer-fill"></div>
@@ -919,13 +930,6 @@
 
       <!-- 6 Linhas de Tentativas do Chat -->
       <div class="termo-board" id="termo-board"></div>
-
-      <!-- Legenda Verde / Amarelo / Cinza -->
-      <div class="legend-bar">
-        <span><i class="legend-dot" style="background:#00e676;"></i>Lugar certo (+5⭐)</span>
-        <span><i class="legend-dot" style="background:#ffd54f;"></i>Outro lugar (+2⭐)</span>
-        <span><i class="legend-dot" style="background:#555;"></i>Não tem</span>
-      </div>
 
       <!-- Banner Comemorativo (Novo Seguidor & Presentes) -->
       <div id="celebration-banner">
@@ -1022,94 +1026,89 @@
   <script>
     // 300 Palavras de 5 Letras organizadas por Dica / Categoria
     const WORDS_DB = [
-      // Frutas & Comidas (60)
+      // Frutas & Comidas
       { word: "MANGA", cat: "Frutas" }, { word: "LIMAO", cat: "Frutas" }, { word: "AMORA", cat: "Frutas" },
       { word: "CAQUI", cat: "Frutas" }, { word: "MAMAO", cat: "Frutas" }, { word: "MELAO", cat: "Frutas" },
-      { word: "CACAU", cat: "Frutas" }, { word: "PINHA", cat: "Frutas" }, { word: "JACA", cat: "Frutas" },
-      { word: "ARROZ", cat: "Comidas" }, { word: "PIZZA", cat: "Comidas" }, { word: "PUDIM", cat: "Comidas" },
-      { word: "TORTA", cat: "Comidas" }, { word: "CARNE", cat: "Comidas" }, { word: "PEIXE", cat: "Comidas" },
-      { word: "SOPAS", cat: "Comidas" }, { word: "MILHO", cat: "Comidas" }, { word: "AVEIA", cat: "Comidas" },
-      { word: "TRIGO", cat: "Comidas" }, { word: "LEITE", cat: "Comidas" }, { word: "CREME", cat: "Comidas" },
-      { word: "CALDO", cat: "Comidas" }, { word: "DOCES", cat: "Comidas" }, { word: "SUSHI", cat: "Comidas" },
-      { word: "TACOS", cat: "Comidas" }, { word: "QUIBE", cat: "Comidas" }, { word: "PASTA", cat: "Comidas" },
-      { word: "SONHO", cat: "Comidas" }, { word: "BRIOX", cat: "Comidas" }, { word: "PAVEO", cat: "Comidas" },
+      { word: "CACAU", cat: "Frutas" }, { word: "PINHA", cat: "Frutas" }, { word: "ARROZ", cat: "Comidas" },
+      { word: "PIZZA", cat: "Comidas" }, { word: "PUDIM", cat: "Comidas" }, { word: "TORTA", cat: "Comidas" },
+      { word: "CARNE", cat: "Comidas" }, { word: "PEIXE", cat: "Comidas" }, { word: "SOPAS", cat: "Comidas" },
+      { word: "MILHO", cat: "Comidas" }, { word: "AVEIA", cat: "Comidas" }, { word: "TRIGO", cat: "Comidas" },
+      { word: "LEITE", cat: "Comidas" }, { word: "CREME", cat: "Comidas" }, { word: "CALDO", cat: "Comidas" },
+      { word: "DOCES", cat: "Comidas" }, { word: "SUSHI", cat: "Comidas" }, { word: "TACOS", cat: "Comidas" },
+      { word: "QUIBE", cat: "Comidas" }, { word: "PASTA", cat: "Comidas" }, { word: "SONHO", cat: "Comidas" },
 
-      // Animais (45)
+      // Animais
       { word: "TIGRE", cat: "Animais" }, { word: "ZEBRA", cat: "Animais" }, { word: "ARARA", cat: "Animais" },
       { word: "COBRA", cat: "Animais" }, { word: "PANDA", cat: "Animais" }, { word: "POLVO", cat: "Animais" },
       { word: "BURRO", cat: "Animais" }, { word: "CABRA", cat: "Animais" }, { word: "PORCO", cat: "Animais" },
-      { word: "OVELHA", cat: "Animais" }, { word: "CERvo", cat: "Animais" }, { word: "HIENA", cat: "Animais" },
-      { word: "AGUIA", cat: "Animais" }, { word: "CORVO", cat: "Animais" }, { word: "GARCA", cat: "Animais" },
-      { word: "CISNE", cat: "Animais" }, { word: "PATOS", cat: "Animais" }, { word: "GALOS", cat: "Animais" },
-      { word: "GATOS", cat: "Animais" }, { word: "LOBOS", cat: "Animais" }, { word: "URSOS", cat: "Animais" },
-      { word: "LEAOA", cat: "Animais" }, { word: "GRILO", cat: "Animais" }, { word: "MOSCA", cat: "Animais" },
-      { word: "PULGA", cat: "Animais" }, { word: "LESMA", cat: "Animais" }, { word: "SAPOS", cat: "Animais" },
-      { word: "BAGRE", cat: "Animais" }, { word: "ATUNS", cat: "Animais" }, { word: "LULAS", cat: "Animais" },
-      { word: "FOCAS", cat: "Animais" }, { word: "LONTRA", cat: "Animais" }, { word: "GAMBA", cat: "Animais" },
+      { word: "CERVO", cat: "Animais" }, { word: "HIENA", cat: "Animais" }, { word: "AGUIA", cat: "Animais" },
+      { word: "CORVO", cat: "Animais" }, { word: "GARCA", cat: "Animais" }, { word: "CISNE", cat: "Animais" },
+      { word: "PATOS", cat: "Animais" }, { word: "GALOS", cat: "Animais" }, { word: "GATOS", cat: "Animais" },
+      { word: "LOBOS", cat: "Animais" }, { word: "URSOS", cat: "Animais" }, { word: "GRILO", cat: "Animais" },
+      { word: "MOSCA", cat: "Animais" }, { word: "PULGA", cat: "Animais" }, { word: "LESMA", cat: "Animais" },
+      { word: "SAPOS", cat: "Animais" }, { word: "BAGRE", cat: "Animais" }, { word: "ATUNS", cat: "Animais" },
+      { word: "LULAS", cat: "Animais" }, { word: "FOCAS", cat: "Animais" }, { word: "GAMBA", cat: "Animais" },
       { word: "QUATI", cat: "Animais" }, { word: "TAPIR", cat: "Animais" }, { word: "LHAMA", cat: "Animais" },
       { word: "COALA", cat: "Animais" }, { word: "LEMUR", cat: "Animais" }, { word: "PAVAO", cat: "Animais" },
-      { word: "SABIA", cat: "Animais" }, { word: "CANAR", cat: "Animais" }, { word: "POMBO", cat: "Animais" },
+      { word: "SABIA", cat: "Animais" }, { word: "POMBO", cat: "Animais" },
 
-      // Natureza & Clima (45)
+      // Natureza & Clima
       { word: "CHUVA", cat: "Natureza" }, { word: "VENTO", cat: "Natureza" }, { word: "NUVEM", cat: "Natureza" },
       { word: "PRAIA", cat: "Natureza" }, { word: "SERRA", cat: "Natureza" }, { word: "MONTE", cat: "Natureza" },
       { word: "PEDRA", cat: "Natureza" }, { word: "AREIA", cat: "Natureza" }, { word: "TERRA", cat: "Natureza" },
       { word: "BARRO", cat: "Natureza" }, { word: "FOLHA", cat: "Natureza" }, { word: "GALHO", cat: "Natureza" },
-      { word: "TRONC", cat: "Natureza" }, { word: "FLORA", cat: "Natureza" }, { word: "FAUNA", cat: "Natureza" },
-      { word: "SELVA", cat: "Natureza" }, { word: "CAMPO", cat: "Natureza" }, { word: "VALES", cat: "Natureza" },
-      { word: "LAGOS", cat: "Natureza" }, { word: "MARES", cat: "Natureza" }, { word: "ONDAS", cat: "Natureza" },
-      { word: "ILHAS", cat: "Natureza" }, { word: "ROCHA", cat: "Natureza" }, { word: "GRUTA", cat: "Natureza" },
-      { word: "RAIOS", cat: "Natureza" }, { word: "NEVEA", cat: "Natureza" }, { word: "GEADA", cat: "Natureza" },
-      { word: "BRISA", cat: "Natureza" }, { word: "CALOR", cat: "Natureza" }, { word: "CLIMA", cat: "Natureza" },
-      { word: "ASTRO", cat: "Natureza" }, { word: "MUNDO", cat: "Natureza" }, { word: "GLOBO", cat: "Natureza" },
-      { word: "NORTE", cat: "Natureza" }, { word: "LESTE", cat: "Natureza" }, { word: "OESTE", cat: "Natureza" },
+      { word: "FLORA", cat: "Natureza" }, { word: "FAUNA", cat: "Natureza" }, { word: "SELVA", cat: "Natureza" },
+      { word: "CAMPO", cat: "Natureza" }, { word: "VALES", cat: "Natureza" }, { word: "LAGOS", cat: "Natureza" },
+      { word: "MARES", cat: "Natureza" }, { word: "ONDAS", cat: "Natureza" }, { word: "ILHAS", cat: "Natureza" },
+      { word: "ROCHA", cat: "Natureza" }, { word: "GRUTA", cat: "Natureza" }, { word: "RAIOS", cat: "Natureza" },
+      { word: "GEADA", cat: "Natureza" }, { word: "BRISA", cat: "Natureza" }, { word: "CALOR", cat: "Natureza" },
+      { word: "CLIMA", cat: "Natureza" }, { word: "ASTRO", cat: "Natureza" }, { word: "MUNDO", cat: "Natureza" },
+      { word: "GLOBO", cat: "Natureza" }, { word: "NORTE", cat: "Natureza" }, { word: "LESTE", cat: "Natureza" },
+      { word: "OESTE", cat: "Natureza" },
 
-      // Casa & Objetos (60)
-      { word: "PORTA", cat: "Casa" }, { word: "CHAVE", cat: "Casa" }, { word: "CAMA", cat: "Casa" },
-      { word: "MESAS", cat: "Casa" }, { word: "SOFAS", cat: "Casa" }, { word: "TELHA", cat: "Casa" },
-      { word: "MUROS", cat: "Casa" }, { word: "PISOS", cat: "Casa" }, { word: "FORRO", cat: "Casa" },
-      { word: "VIDRO", cat: "Casa" }, { word: "FERRO", cat: "Casa" }, { word: "PRATO", cat: "Cozinha" },
-      { word: "GARFO", cat: "Cozinha" }, { word: "FACAS", cat: "Cozinha" }, { word: "COPOS", cat: "Cozinha" },
-      { word: "BACIA", cat: "Cozinha" }, { word: "FORNO", cat: "Cozinha" }, { word: "FOGAO", cat: "Cozinha" },
-      { word: "POTES", cat: "Cozinha" }, { word: "JARRA", cat: "Cozinha" }, { word: "TAZAS", cat: "Cozinha" },
-      { word: "CAIXA", cat: "Objetos" }, { word: "BOLSA", cat: "Objetos" }, { word: "RELOG", cat: "Objetos" },
-      { word: "OCULO", cat: "Objetos" }, { word: "ANEL", cat: "Objetos" }, { word: "COLAR", cat: "Objetos" },
-      { word: "CINTO", cat: "Roupas" }, { word: "BLUSA", cat: "Roupas" }, { word: "CALCA", cat: "Roupas" },
-      { word: "TENIS", cat: "Roupas" }, { word: "BOTAS", cat: "Roupas" }, { word: "LUVAS", cat: "Roupas" },
-      { word: "MEIAS", cat: "Roupas" }, { word: "TOUCA", cat: "Roupas" }, { word: "TERNO", cat: "Roupas" },
-      { word: "LIVRO", cat: "Escola" }, { word: "LAPIS", cat: "Escola" }, { word: "LOUSA", cat: "Escola" },
-      { word: "REGUA", cat: "Escola" }, { word: "PAPEL", cat: "Escola" }, { word: "PROVA", cat: "Escola" },
-      { word: "ALUNO", cat: "Escola" }, { word: "TURMA", cat: "Escola" }, { word: "NOTAS", cat: "Escola" },
-      { word: "TINTA", cat: "Escola" }, { word: "MAPAS", cat: "Escola" }, { word: "TEXTO", cat: "Escola" },
-      { word: "LETRA", cat: "Escola" }, { word: "FRASE", cat: "Escola" }, { word: "VERBO", cat: "Escola" },
+      // Casa & Objetos
+      { word: "PORTA", cat: "Casa" }, { word: "CHAVE", cat: "Casa" }, { word: "MESAS", cat: "Casa" },
+      { word: "SOFAS", cat: "Casa" }, { word: "TELHA", cat: "Casa" }, { word: "MUROS", cat: "Casa" },
+      { word: "PISOS", cat: "Casa" }, { word: "FORRO", cat: "Casa" }, { word: "VIDRO", cat: "Casa" },
+      { word: "FERRO", cat: "Casa" }, { word: "PRATO", cat: "Cozinha" }, { word: "GARFO", cat: "Cozinha" },
+      { word: "FACAS", cat: "Cozinha" }, { word: "COPOS", cat: "Cozinha" }, { word: "BACIA", cat: "Cozinha" },
+      { word: "FORNO", cat: "Cozinha" }, { word: "FOGAO", cat: "Cozinha" }, { word: "POTES", cat: "Cozinha" },
+      { word: "JARRA", cat: "Cozinha" }, { word: "CAIXA", cat: "Objetos" }, { word: "BOLSA", cat: "Objetos" },
+      { word: "COLAR", cat: "Objetos" }, { word: "CINTO", cat: "Roupas" }, { word: "BLUSA", cat: "Roupas" },
+      { word: "CALCA", cat: "Roupas" }, { word: "TENIS", cat: "Roupas" }, { word: "BOTAS", cat: "Roupas" },
+      { word: "LUVAS", cat: "Roupas" }, { word: "MEIAS", cat: "Roupas" }, { word: "TOUCA", cat: "Roupas" },
+      { word: "TERNO", cat: "Roupas" }, { word: "LIVRO", cat: "Escola" }, { word: "LAPIS", cat: "Escola" },
+      { word: "LOUSA", cat: "Escola" }, { word: "REGUA", cat: "Escola" }, { word: "PAPEL", cat: "Escola" },
+      { word: "PROVA", cat: "Escola" }, { word: "ALUNO", cat: "Escola" }, { word: "TURMA", cat: "Escola" },
+      { word: "NOTAS", cat: "Escola" }, { word: "TINTA", cat: "Escola" }, { word: "MAPAS", cat: "Escola" },
+      { word: "TEXTO", cat: "Escola" }, { word: "LETRA", cat: "Escola" }, { word: "FRASE", cat: "Escola" },
+      { word: "VERBO", cat: "Escola" },
 
-      // Música, Esportes & Lazer (45)
+      // Música, Esportes & Lazer
       { word: "PIANO", cat: "Música" }, { word: "HARPA", cat: "Música" }, { word: "GAITA", cat: "Música" },
-      { word: "SAMBA", cat: "Música" }, { word: "PAGOD", cat: "Música" }, { word: "RITMO", cat: "Música" },
-      { word: "PALCO", cat: "Música" }, { word: "SHOWS", cat: "Música" }, { word: "BANDA", cat: "Música" },
-      { word: "DISCO", cat: "Música" }, { word: "AUDIO", cat: "Música" }, { word: "VOZES", cat: "Música" },
-      { word: "CORAL", cat: "Música" }, { word: "DANCA", cat: "Música" }, { word: "FESTA", cat: "Lazer" },
-      { word: "JOGOS", cat: "Lazer" }, { word: "FILME", cat: "Lazer" }, { word: "SERIE", cat: "Lazer" },
-      { word: "CIRCO", cat: "Lazer" }, { word: "PRAZA", cat: "Lazer" }, { word: "PARQU", cat: "Lazer" },
+      { word: "SAMBA", cat: "Música" }, { word: "RITMO", cat: "Música" }, { word: "PALCO", cat: "Música" },
+      { word: "SHOWS", cat: "Música" }, { word: "BANDA", cat: "Música" }, { word: "DISCO", cat: "Música" },
+      { word: "AUDIO", cat: "Música" }, { word: "VOZES", cat: "Música" }, { word: "CORAL", cat: "Música" },
+      { word: "DANCA", cat: "Música" }, { word: "FESTA", cat: "Lazer" }, { word: "JOGOS", cat: "Lazer" },
+      { word: "FILME", cat: "Lazer" }, { word: "SERIE", cat: "Lazer" }, { word: "CIRCO", cat: "Lazer" },
       { word: "VOLEI", cat: "Esportes" }, { word: "SURFE", cat: "Esportes" }, { word: "GOLFE", cat: "Esportes" },
       { word: "SKATE", cat: "Esportes" }, { word: "PESCA", cat: "Esportes" }, { word: "SALTO", cat: "Esportes" },
-      { word: "TREIN", cat: "Esportes" }, { word: "BOLAS", cat: "Esportes" }, { word: "GOLS", cat: "Esportes" },
-      { word: "TIMES", cat: "Esportes" }, { word: "PLACA", cat: "Esportes" }, { word: "PODIO", cat: "Esportes" },
+      { word: "BOLAS", cat: "Esportes" }, { word: "TIMES", cat: "Esportes" }, { word: "PLACA", cat: "Esportes" },
+      { word: "PODIO", cat: "Esportes" },
 
-      // Corpo, Transporte & Profissões (45)
+      // Corpo, Transporte & Profissões
       { word: "OLHOS", cat: "Corpo" }, { word: "NARIZ", cat: "Corpo" }, { word: "BOCAS", cat: "Corpo" },
       { word: "DENTE", cat: "Corpo" }, { word: "BRACO", cat: "Corpo" }, { word: "PERNA", cat: "Corpo" },
       { word: "DEDOS", cat: "Corpo" }, { word: "UNHAS", cat: "Corpo" }, { word: "PEITO", cat: "Corpo" },
-      { word: "COSTAS", cat: "Corpo" }, { word: "MENTE", cat: "Corpo" }, { word: "SAUDE", cat: "Corpo" },
-      { word: "CARRO", cat: "Veículos" }, { word: "MOTOS", cat: "Veículos" }, { word: "NAVIO", cat: "Veículos" },
-      { word: "BARCO", cat: "Veículos" }, { word: "AVIAO", cat: "Veículos" }, { word: "TRENS", cat: "Veículos" },
-      { word: "RODAS", cat: "Veículos" }, { word: "PNEUS", cat: "Veículos" }, { word: "MOTOR", cat: "Veículos" },
-      { word: "FREIO", cat: "Veículos" }, { word: "PISTA", cat: "Veículos" }, { word: "ROTAS", cat: "Veículos" },
-      { word: "JUIZA", cat: "Profissões" }, { word: "CHEFE", cat: "Profissões" }, { word: "LIDER", cat: "Profissões" },
-      { word: "AUTOR", cat: "Profissões" }, { word: "POETA", cat: "Profissões" }, { word: "ATRIZ", cat: "Profissões" },
-      { word: "AMIGO", cat: "Pessoas" }, { word: "NOBRE", cat: "Qualidade" }, { word: "FELIZ", cat: "Emoção" },
-      { word: "AMOR", cat: "Emoção" }, { word: "SORTE", cat: "Geral" }, { word: "FORCA", cat: "Geral" },
-      { word: "PODER", cat: "Geral" }, { word: "SONHO", cat: "Geral" }, { word: "IDEIA", cat: "Geral" },
+      { word: "MENTE", cat: "Corpo" }, { word: "SAUDE", cat: "Corpo" }, { word: "CARRO", cat: "Veículos" },
+      { word: "MOTOS", cat: "Veículos" }, { word: "NAVIO", cat: "Veículos" }, { word: "BARCO", cat: "Veículos" },
+      { word: "AVIAO", cat: "Veículos" }, { word: "TRENS", cat: "Veículos" }, { word: "RODAS", cat: "Veículos" },
+      { word: "PNEUS", cat: "Veículos" }, { word: "MOTOR", cat: "Veículos" }, { word: "FREIO", cat: "Veículos" },
+      { word: "PISTA", cat: "Veículos" }, { word: "ROTAS", cat: "Veículos" }, { word: "JUIZA", cat: "Profissões" },
+      { word: "CHEFE", cat: "Profissões" }, { word: "LIDER", cat: "Profissões" }, { word: "AUTOR", cat: "Profissões" },
+      { word: "POETA", cat: "Profissões" }, { word: "ATRIZ", cat: "Profissões" }, { word: "AMIGO", cat: "Pessoas" },
+      { word: "NOBRE", cat: "Qualidade" }, { word: "FELIZ", cat: "Emoção" }, { word: "SORTE", cat: "Geral" },
+      { word: "FORCA", cat: "Geral" }, { word: "PODER", cat: "Geral" }, { word: "IDEIA", cat: "Geral" },
       { word: "VALOR", cat: "Geral" }, { word: "TEMPO", cat: "Geral" }, { word: "HORAS", cat: "Geral" },
       { word: "NOITE", cat: "Geral" }, { word: "TARDE", cat: "Geral" }, { word: "MANHA", cat: "Geral" }
     ].map(item => ({
@@ -1118,7 +1117,7 @@
     })).filter(item => item.word.length === 5);
 
     const MAX_ROWS = 6;
-    const ROUND_DURATION = 60; // 1 minuto por rodada
+    const ROUND_DURATION = 60;
 
     let shuffledPool = [];
     let poolIndex = 0;
@@ -1306,7 +1305,6 @@
       const guessChars = guess.split('');
       const used = Array(5).fill(false);
 
-      // 1ª passada: Letras Verdes (posição exata)
       for (let i = 0; i < 5; i++) {
         if (guessChars[i] === targetChars[i]) {
           result[i] = 'correct';
@@ -1314,7 +1312,6 @@
         }
       }
 
-      // 2ª passada: Letras Amarelas (letra existe em outra posição)
       for (let i = 0; i < 5; i++) {
         if (result[i] === 'correct') continue;
         for (let j = 0; j < 5; j++) {
@@ -1483,7 +1480,6 @@
 
       addGuessPill(name, avatar, rawComment.slice(0, 16));
 
-      // Extrai a primeira palavra de exatas 5 letras digitada no comentário
       const tokens = rawComment
         .toUpperCase()
         .normalize("NFD")
@@ -1494,25 +1490,19 @@
       const candidate = tokens[0];
       if (!candidate) return;
 
-      // Evita repetir exatamente a mesma palavra já na tela
       if (guesses.some(g => g.word === candidate)) return;
 
       const statuses = evaluateWord(candidate, currentSecret.word);
 
-      // Pontuação progressiva por novas letras descobertas
       let earnedPts = 0;
-      let greenCount = 0;
-      let yellowCount = 0;
 
       for (let i = 0; i < 5; i++) {
         if (statuses[i] === 'correct' && !solvedPositions[i]) {
           solvedPositions[i] = true;
           earnedPts += 5;
-          greenCount++;
         } else if (statuses[i] === 'present' && !discoveredPresentLetters.has(candidate[i])) {
           discoveredPresentLetters.add(candidate[i]);
           earnedPts += 2;
-          yellowCount++;
         }
       }
 
